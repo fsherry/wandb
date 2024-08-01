@@ -672,12 +672,10 @@ func (s *Sender) sendForkRun(record *service.Record, run *service.RunRecord) {
 
 	fork := s.settings.GetForkFrom()
 	update, err := runbranch.NewForkBranch(
-		s.ctx,
-		s.graphqlClient,
 		fork.GetRun(),
 		fork.GetMetric(),
 		fork.GetValue(),
-	).GetUpdates(s.startState, runbranch.RunPath{
+	).ApplyChanges(s.startState, runbranch.RunPath{
 		Entity:  s.startState.Entity,
 		Project: s.startState.Project,
 		RunID:   s.startState.RunID,
@@ -714,7 +712,7 @@ func (s *Sender) sendRewindRun(record *service.Record, run *service.RunRecord) {
 		rewind.GetRun(),
 		rewind.GetMetric(),
 		rewind.GetValue(),
-	).GetUpdates(s.startState, runbranch.RunPath{
+	).ApplyChanges(s.startState, runbranch.RunPath{
 		Entity:  s.startState.Entity,
 		Project: s.startState.Project,
 		RunID:   s.startState.RunID,
